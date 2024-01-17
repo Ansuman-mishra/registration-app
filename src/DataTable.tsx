@@ -3,7 +3,6 @@ import DataTables, { Config } from "datatables.net-dt";
 import "datatables.net-buttons/js/dataTables.buttons";
 import "datatables.net-buttons/js/buttons.html5";
 import "datatables.net-buttons/js/buttons.print";
-import "datatables.net-dt/css/jquery.dataTables.css";
 const CustomDataTable = ({ ...props }: Config) => {
     const tableRef = useRef<HTMLTableElement>(null);
 
