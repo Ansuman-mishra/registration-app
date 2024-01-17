@@ -1,5 +1,5 @@
 import { Autocomplete, Box, Button, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Step, StepLabel, Stepper, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -45,12 +45,12 @@ const schemaStep2: yup.ObjectSchema<AddressDetails> = yup.object().shape({
     state: yup.string(),
     city: yup.string(),
     country: yup.string(),
-    pincode: yup.number().typeError("Pincode must be a number"),
+    pincode: yup.string().optional(),
 });
 
 const RegistrationForm = () => {
     const [data, setData] = useState<PersonalDetails | AddressDetails>();
-    const { countryOptions, loading, handleInputChange } = useCountryOptions();
+    const { countryOptions, loading, handleInputChange }: any = useCountryOptions();
     const dispatch = useDispatch();
     const [activeStep, setActiveStep] = useState(0);
     const methods = useForm({
@@ -65,6 +65,13 @@ const RegistrationForm = () => {
         reset,
         clearErrors,
     } = methods;
+
+    useEffect(() => {
+        setData((prevData) => ({
+            ...prevData,
+            country: "NA",
+        }));
+    }, []);
 
     const schema1Validation = () => {
         schemaStep1
@@ -114,6 +121,7 @@ const RegistrationForm = () => {
 
     const handleStep2Submit = async (addressData: AddressDetails) => {
         // Additional validations for step 2
+        console.log("addressData", addressData);
         await schemaStep2
             .validate(data, { abortEarly: false })
             .then(() => {
@@ -294,7 +302,7 @@ const RegistrationForm = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={3}>
-                                <TextField {...methods.register("pincode")} label="Pincode" type="number" margin="normal" fullWidth />
+                                <TextField {...methods.register("pincode")} label="Pincode" margin="normal" fullWidth />
                             </Grid>
                             <Grid item xs={12} sm={6} md={12} display="flex" alignItems="center" justifyContent="space-around">
                                 <Button variant="contained" onClick={handleBack}>
@@ -318,11 +326,11 @@ const RegistrationForm = () => {
         { data: "mobile", title: "Mobile" },
         { data: "govIdType", title: "Govt Issued ID" },
         { data: "govIdNumber", title: "Govt ID" },
-        { data: "address", title: "Address" },
-        { data: "state", title: "State" },
-        { data: "city", title: "City" },
-        { data: "country", title: "Country" },
-        { data: "pincode", title: "Pincode" },
+        { data: "address", title: "Address", defaultContent: "<i>Not set</i>" },
+        { data: "state", title: "State", defaultContent: "<i>Not set</i>" },
+        { data: "city", title: "City", defaultContent: "<i>Not set</i>" },
+        { data: "country", title: "Country", defaultContent: "<i>Not set</i>" },
+        { data: "pincode", title: "Pincode", defaultContent: "<i>Not set</i>" },
     ];
     return (
         <FormProvider {...methods}>
