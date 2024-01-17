@@ -45,7 +45,7 @@ const schemaStep2: yup.ObjectSchema<AddressDetails> = yup.object().shape({
     state: yup.string(),
     city: yup.string(),
     country: yup.string(),
-    pincode: yup.string().optional(),
+    pincode: yup.number().optional(),
 });
 
 const RegistrationForm = () => {
@@ -302,7 +302,7 @@ const RegistrationForm = () => {
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6} md={3}>
-                                <TextField {...methods.register("pincode")} label="Pincode" margin="normal" fullWidth />
+                                <TextField {...methods.register("pincode")} label="Pincode" margin="normal" fullWidth type="number" defaultValue={0} />
                             </Grid>
                             <Grid item xs={12} sm={6} md={12} display="flex" alignItems="center" justifyContent="space-around">
                                 <Button variant="contained" onClick={handleBack}>

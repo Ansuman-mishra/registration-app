@@ -12,7 +12,7 @@ export interface AddressDetails {
     state?: string;
     city?: string;
     country?: string;
-    pincode?: string;
+    pincode?: number | undefined;
 }
 export interface Country {
     name: string;
